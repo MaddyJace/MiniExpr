@@ -48,11 +48,11 @@ MiniExpr 是一个小型表达式解析与求值器，采用递归下降解析�
 
 4. 错误定位与异常信息
 
-   - `ParseException` 支持一个静态的 `source`（由 `MiniExpr.eval` 在入口设置），当抛出异常时会把源字符串中出错位置附近的最多左右 15 个字符提取出来，并用 `^` 指向错误索引，从而生成易读的错误上下文片段。例如：
+   - `ParseException` 支持一个线程本地的 `source`（由 `MiniExpr.eval` 在入口设置），当抛出异常时会把源字符串中出错位置附近的最多左右 15 个字符提取出来，并用 `^` 指向错误索引，从而生成易读的错误上下文片段。异常消息中的索引为 1-based（对外更友好），但 `ParseException.pos` 字段仍保留 0-based 以便程序内部使用。例如：
 
-     Relational operators require numeric operands at index 14
-     1 > 0 && 10 > a000
-                   ^
+   Relational operators require numeric operands at index 15
+   1 > 0 && 10 > a000
+             ^
 
    - 此外对截断的两端会加省略号 `...`，并且现在支持 pos 指向字符串末尾（EOF），caret 可指向末尾后的插入点。
 

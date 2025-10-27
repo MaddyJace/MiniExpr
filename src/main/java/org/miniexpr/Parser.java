@@ -176,7 +176,8 @@ public class Parser {
         }
 
         if (match(TokenType.IDENTIFIER)) {
-            return new org.miniexpr.nodes.StringNode(t.text, t.pos); // 将标识符视作字符串常量
+            // 标识符直接作为字符串处理（无需引号），用于比较和三元运算
+            return new org.miniexpr.nodes.StringNode(t.text, t.pos);
         }
 
         if (match(TokenType.LPAREN)) {

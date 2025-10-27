@@ -43,7 +43,7 @@ public class Lexer {
                 next();
             } else if (Character.isDigit(ch)) {
                 tokens.add(readNumber());
-            } else if (ch == '"') {
+            } else if (ch == '"' || ch == '\'') {
                 tokens.add(readString());
             } else if (Character.isLetter(ch) || ch == '_') {
                 tokens.add(readIdentifier());
@@ -81,15 +81,16 @@ public class Lexer {
     // 读取双引号字符串字面量，不支持转义（简单实现）
     private Token readString() throws ParseException {
         int start = pos;
-        next(); // skip "
+        char quote = peek();
+        next(); // skip opening quote
         StringBuilder sb = new StringBuilder();
-        while (peek() != '"' && peek() != '\0') {
+        while (peek() != quote && peek() != '\0') {
             sb.append(peek());
             next();
         }
-        if (peek() != '"')
+        if (peek() != quote)
             throw new ParseException("Unterminated string literal", start);
-        next(); // skip ending "
+        next(); // skip ending quote
         return new Token(TokenType.STRING, sb.toString(), start);
     }
 
